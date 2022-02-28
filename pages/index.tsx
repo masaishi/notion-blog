@@ -17,7 +17,7 @@ export const getStaticProps = async () => {
   try {
     let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
     
-    posts = posts.slice(0, 7);
+    // posts = posts.slice(0, 7);
     for(let post of posts) {
       post!.recordMap = await getPage(post!.id);
     }
