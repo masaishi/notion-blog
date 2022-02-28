@@ -11,17 +11,7 @@ const notionApi = new NotionAPI({
 	authToken: process.env.TOKEN_V2,
 });
 
-type Post = {
-  id: string
-  url: string
-  slug: string
-  title: string
-  date: string
-	edited: string
-  published: boolean
-  hashtags: string[]
-}
-
+import { Post } from './postType'
 
 export const getPosts = async ( databaseId: string) => {
 	const response = await notion.databases.query({
@@ -35,7 +25,7 @@ export const getPosts = async ( databaseId: string) => {
 	})
 	const { results } = response
 
-	let posts = results.map((result) => {
+	let posts = results.map((result:any) => {
 		const d = result.properties
 		
 		// Add slug if it is empty.
@@ -59,7 +49,7 @@ export const getPosts = async ( databaseId: string) => {
 			return undefined
 		}
 
-		const item: Post = {
+		const item:any = {
 			id: result.id,
 			url: result.url,
 			slug: '',
@@ -68,12 +58,13 @@ export const getPosts = async ( databaseId: string) => {
 			edited: result.last_edited_time,
 			published: false,
 			hashtags: [],
+			recordMap: {},
 		}
 		
 		Object.keys(d).forEach((key) => {
 			const property = d[key]
 			if (property.type === 'people') {
-				item[key.toLowerCase()] = property.people.map((p) => (p as any).name)
+				item[key.toLowerCase()] = property.people.map((p:any) => (p as any).name)
 			} else if (property.type === 'rich_text') {
 				item[key.toLowerCase()] = property.rich_text[0]?.plain_text
 			} else if (property.type === 'files') {
@@ -87,7 +78,7 @@ export const getPosts = async ( databaseId: string) => {
 			} else if (property.type === 'checkbox') {
 				item[key.toLowerCase()] = property.checkbox
 			} else if (property.type === 'multi_select') {
-				item[key.toLowerCase()] = property.multi_select?.map((hashtag) => hashtag.name)
+				item[key.toLowerCase()] = property.multi_select?.map((hashtag:any) => hashtag.name)
 			} else if (property.type === 'date') {
 				item[key.toLowerCase()] = property.date?.start
 			}
@@ -115,17 +106,14 @@ export const getPosts = async ( databaseId: string) => {
 		if(item.date.length < 10){
 			item.date = item.date + 'T16:00:00.000-08:00'
 		}
-		item.date = new Date(item.date)
+		item.date = new Date(item.date);
 
-		return item
+		return item as Post
 	})
 
-	posts = posts.filter(function(post) {
-		return (post);
-	});
-
+	posts = posts.filter((post): post is Post => typeof post !== 'undefined');
 	// Sort database by date.
-	posts.sort((a, b) => b.date - a.date);
+	// posts.sort((a, b) => b.date - a.date);
 
 	return posts
 }
@@ -143,3 +131,24 @@ export const updateProperties = async (pageId: string, properties: any) => {
   });
 }
 
+export const getHashtags = async () => {
+	const response = await notion.databases.query({
+		database_id: process.env.NOTION_DATABASE_ID ?? '',
+	})
+	const { results } = response
+
+	let hashtags = []
+	for(const result of results as any[]){
+		const d:any = result?.properties?
+		for(const select of d.Hashtags.multi_select as any) {
+			if(!hashtags.filter(hashtag => hashtag.name == select.name).length){
+				hashtags.push({'name':select.name, 'color':select.color, 'count':1})
+			}else{
+				hashtags.filter(hashtag => hashtag.name == select.name)[0].count += 1
+			}
+		}
+		
+	}
+	hashtags = hashtags.sort((a, b) => b.count - a.count);
+	return hashtags
+}

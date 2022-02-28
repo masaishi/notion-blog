@@ -7,7 +7,9 @@ import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css'
 
 import { NotionRenderer } from 'react-notion-x'
-import {getPosts, getPage} from '../compornents/notion'
+
+import {getPosts, getPage, getHashtags} from '../compornents/notion'
+import { Post } from '../notion/postType'
 
 import {PostContent} from '../compornents/layout/postContent'
 
@@ -17,11 +19,14 @@ export const getStaticProps = async () => {
     
     posts = posts.slice(0, 7);
     for(let post of posts) {
-      post.recordMap = await getPage(post.id)
+      post.recordMap = await getPage(post.id);
     }
+
+    // Hashtag selections
+    let hashtag_list = await getHashtags();
     
-    posts = JSON.parse(JSON.stringify(posts));
-    const props = {posts: posts};
+    let props = {posts: posts, hashtag_list: hashtag_list};
+    props = JSON.parse(JSON.stringify(props));
 
     return { props, revalidate: 60 * 60 * 12 }
   } catch (err) {
@@ -33,11 +38,11 @@ export const getStaticProps = async () => {
   }
 }
 
-export default function NotionDomainPage({posts}) {
+export default function NotionDomainPage({posts, hashtag_list}) {
   const router = useRouter();
+  // query hashtags
   let { hashtags } = router.query
   hashtags = hashtags ? hashtags.split(',') : []
-  console.log(hashtags);
   
   let show_posts = posts
   if(hashtags){
@@ -45,19 +50,46 @@ export default function NotionDomainPage({posts}) {
       show_posts = show_posts.filter(post => post.hashtags.includes(hashtag));
     }
   }
+
+  const hashtagChange = e => {
+    const {name, checked} = e.target;
+    console.log(e);
+    if(checked){
+      hashtags.push(name);
+    } else {
+      hashtags = hashtags.filter(hashtag => hashtag !== name);
+    }
+    router.push({
+      pathname: '/',
+      query: { hashtags: hashtags.join(',') },
+    });
+  }
   
   return (
     <div>
+      <div className="mt-1 accordion" id="selectHashtags">
+        <div id="selections" className="accordion-collapse collapse" aria-labelledby="selections" data-bs-parent="#selections">
+          <div className="accordion-body">
+            {hashtag_list.map((hashtag) => (
+              <div className="form-check mb-2">  
+                <input className="form-check-input" type="checkbox" id={`hashtag-${hashtag.name}`} name={hashtag.name} onChange={hashtagChange} />
+                <label className={`form-check-label notion-${hashtag.color}_background`} htmlFor={`hashtag-${hashtag.name}`} >
+                  #{hashtag.name}: {hashtag.count}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* <button id="reverse-button" onClick={reverse} hidden>reverse-button</button> */}
       <div className="container main">
         {/* <h5>{reverseState ? "新しい順" : "古い順"}</h5> */}
         <h5>新しい順</h5>
-        {show_posts.map((post) => (
-          
+        {show_posts.map((post:Post) => (
           <div className="card mt-5" key={post.id}>
             <PostContent post={post} />
           </div>
-          
         ))}
       </div>
     </div>
