@@ -113,7 +113,7 @@ export const getPosts = async ( databaseId: string) => {
 
 	posts = posts.filter((post): post is Post => typeof post !== 'undefined');
 	// Sort database by date.
-	// posts.sort((a, b) => b.date - a.date);
+	posts.sort((a, b) => b!.date - a!.date);
 
 	return posts
 }
@@ -135,32 +135,20 @@ export const getHashtags = async () => {
 	const response = await notion.databases.query({
 		database_id: process.env.NOTION_DATABASE_ID ?? '',
 	})
-	const { results } = response
+	const { results } = response as any
 
 	let hashtags:Hashtag[] = []
-	// for(const result of results){
-	// 	const d:any = result.properties
-	// 	for(const select of d.Hashtags.multi_select) {
-	// 		if(!hashtags.filter(hashtag => hashtag.name == select.name).length){
-	// 			hashtags.push({'name':select.name, 'color':select.color, 'count':1})
-	// 		}else{
-	// 			hashtags.filter(hashtag => hashtag.name == select.name)[0].count += 1
-	// 		}
-	// 	}
+	for(const result of results){
+		const d = result.properties! as any
+		for(const select of d.Hashtags.multi_select) {
+			if(!hashtags.filter(hashtag => hashtag.name == select.name).length){
+				hashtags.push({'name':select.name, 'color':select.color, 'count':1})
+			}else{
+				hashtags.filter(hashtag => hashtag.name == select.name)[0].count += 1
+			}
+		}
 		
-	// }
-	// hashtags = hashtags.sort((a, b) => b.count - a.count);
-	// console.log(hashtags);
-
-	hashtags = [
-		{ name: '日本語', color: 'brown', count: 29 },
-		{ name: '留学日記', color: 'pink', count: 21 },
-		{ name: '読書感想文', color: 'red', count: 7 },
-		{ name: 'English', color: 'purple', count: 4 },
-		{ name: 'Note', color: 'green', count: 2 },
-		{ name: 'プログラミング', color: 'blue', count: 2 },
-		{ name: 'Kaggle', color: 'orange', count: 1 },
-	]
-	
+	}
+	hashtags = hashtags.sort((a, b) => b.count - a.count);
 	return hashtags
 }

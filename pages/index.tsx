@@ -42,31 +42,46 @@ export default function NotionDomainPage({posts, hashtag_list}: {posts: Post[], 
   const router = useRouter();
   // query hashtags
   let { hashtags } = router.query;
-  if(hashtags && typeof hashtags === 'string'){
-    hashtags = hashtags.split(',');
-  }
   
+  let q_hashtags:string[] = [];
+  if(hashtags && typeof hashtags === 'string'){
+    q_hashtags = hashtags.split(',');
+  }
+
   let show_posts = posts
-  if(hashtags){
-    for(const hashtag of hashtags){
+  if(q_hashtags.length){
+    for(const hashtag of q_hashtags){
       show_posts = show_posts.filter(post => post.hashtags.includes(hashtag));
     }
   }
 
   const hashtagChange = (e:any) => {
     const {name, checked} = e.target;
-    if(typeof hashtags === 'object'){
+    console.log("hashtags", name, checked, q_hashtags);
+    
+    if(q_hashtags){
       if(checked){
-        hashtags?.push(name);
+        q_hashtags!.push(name);
       } else {
-        hashtags = hashtags!.filter((hashtag:string) => hashtag !== name);
+        q_hashtags = q_hashtags!.filter((hashtag:string) => hashtag !== name);
       }
 
       router.push({
         pathname: '/',
-        query: { hashtags: hashtags.join(',')  },
+        query: { hashtags: q_hashtags.join(',')  },
       });
     }
+
+    if(checked){
+      q_hashtags!.push(name);
+    } else {
+      q_hashtags = q_hashtags!.filter((hashtag:string) => hashtag !== name);
+    }
+
+    router.push({
+      pathname: '/',
+      query: { hashtags: q_hashtags.join(',')  },
+    });
   }
   
   return (

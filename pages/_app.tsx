@@ -25,15 +25,10 @@ import type { AppProps } from 'next/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    // import("bootstrap/dist/js/bootstrap")    
+    require("bootstrap/dist/js/bootstrap")
   }, []);
 
   const router = useRouter() as Router;
-
-  // if (Component.getInitialProps) {
-  //   const hashtags = await getHashtags();
-  // }
-  // console.log(router.query.hashtags);
   
   let HashCheck = ({router}: {router:Router}) => {
     if(router.query.hashtags){
