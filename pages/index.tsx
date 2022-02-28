@@ -17,7 +17,7 @@ export const getStaticProps = async () => {
   try {
     let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
     
-    // posts = posts.slice(0, 7);
+    posts = posts.slice(0, 5);
     for(let post of posts) {
       post!.recordMap = await getPage(post!.id);
     }
@@ -28,7 +28,7 @@ export const getStaticProps = async () => {
     let props = {posts: posts, hashtag_list: hashtag_list};
     props = JSON.parse(JSON.stringify(props));
 
-    return { props, revalidate: 60 * 60 * 12 }
+    return { props, revalidate: 60 * 60 * 1 }
   } catch (err) {
     console.error('page error', err)
 
@@ -86,23 +86,25 @@ export default function NotionDomainPage({posts, hashtag_list}: {posts: Post[], 
   
   return (
     <div>
-      <div className="mt-1 accordion" id="selectHashtags">
-        <div id="selections" className="accordion-collapse collapse show" aria-labelledby="selections" data-bs-parent="#selections">
-          <div className="accordion-body">
-            {hashtag_list.map((hashtag) => (
-              <div className="form-check mb-2" key={`hashtag-${hashtag.name}-field`}>  
-                <input className="form-check-input" type="checkbox" id={`hashtag-${hashtag.name}`} name={hashtag.name} onChange={hashtagChange} />
-                <label className={`form-check-label notion-${hashtag.color}_background`} htmlFor={`hashtag-${hashtag.name}`} >
-                  #{hashtag.name}: {hashtag.count}
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      
 
       {/* <button id="reverse-button" onClick={reverse} hidden>reverse-button</button> */}
       <div className="container main">
+        <div className="mt-1 accordion card mb-3" id="selectHashtags">
+          <div id="selections" className="accordion-collapse collapse show" aria-labelledby="selections" data-bs-parent="#selections">
+            <div className="accordion-body">
+              {hashtag_list.map((hashtag) => (
+                <div className="form-check mb-2" key={`hashtag-${hashtag.name}-field`}>  
+                  <input className="form-check-input" type="checkbox" id={`hashtag-${hashtag.name}`} name={hashtag.name} onChange={hashtagChange} />
+                  <label className={`form-check-label notion-${hashtag.color}_background`} htmlFor={`hashtag-${hashtag.name}`} >
+                    #{hashtag.name}: {hashtag.count}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* <h5>{reverseState ? "新しい順" : "古い順"}</h5> */}
         <h5>新しい順</h5>
         {show_posts.map((post:Post) => (
