@@ -72,7 +72,7 @@ export default function NotionDomainPage({posts, hashtag_list}: {posts: Post[], 
   return (
     <div>
       <div className="mt-1 accordion" id="selectHashtags">
-        <div id="selections" className="accordion-collapse collapse" aria-labelledby="selections" data-bs-parent="#selections">
+        <div id="selections" className="accordion-collapse collapse show" aria-labelledby="selections" data-bs-parent="#selections">
           <div className="accordion-body">
             {hashtag_list.map((hashtag) => (
               <div className="form-check mb-2" key={`hashtag-${hashtag.name}-field`}>  
