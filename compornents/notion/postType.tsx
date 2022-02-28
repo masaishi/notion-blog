@@ -9,3 +9,9 @@ export type Post = {
   hashtags: string[]
   recordMap: any
 }
+
+export type Hashtag = {
+  name: string
+  color: string
+  count: number
+}

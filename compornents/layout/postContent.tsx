@@ -9,8 +9,6 @@ import { NotionRenderer } from 'react-notion-x'
 import { Post } from '../notion/postType'
 
 export const PostContent = ({post}:{post:Post}) => {
-	console.log(post);
-	
   return (
 		<div className="card-body" key={`${post.id}_content`}>
 			<div className='notion light-mode notion-page notion-block'>

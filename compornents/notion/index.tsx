@@ -11,7 +11,7 @@ const notionApi = new NotionAPI({
 	authToken: process.env.TOKEN_V2,
 });
 
-import { Post } from './postType'
+import { Post, Hashtag } from './postType'
 
 export const getPosts = async ( databaseId: string) => {
 	const response = await notion.databases.query({
@@ -137,18 +137,30 @@ export const getHashtags = async () => {
 	})
 	const { results } = response
 
-	let hashtags = []
-	for(const result of results as any[]){
-		const d:any = result?.properties?
-		for(const select of d.Hashtags.multi_select as any) {
-			if(!hashtags.filter(hashtag => hashtag.name == select.name).length){
-				hashtags.push({'name':select.name, 'color':select.color, 'count':1})
-			}else{
-				hashtags.filter(hashtag => hashtag.name == select.name)[0].count += 1
-			}
-		}
+	let hashtags:Hashtag[] = []
+	// for(const result of results){
+	// 	const d:any = result.properties
+	// 	for(const select of d.Hashtags.multi_select) {
+	// 		if(!hashtags.filter(hashtag => hashtag.name == select.name).length){
+	// 			hashtags.push({'name':select.name, 'color':select.color, 'count':1})
+	// 		}else{
+	// 			hashtags.filter(hashtag => hashtag.name == select.name)[0].count += 1
+	// 		}
+	// 	}
 		
-	}
-	hashtags = hashtags.sort((a, b) => b.count - a.count);
+	// }
+	// hashtags = hashtags.sort((a, b) => b.count - a.count);
+	// console.log(hashtags);
+
+	hashtags = [
+		{ name: '日本語', color: 'brown', count: 29 },
+		{ name: '留学日記', color: 'pink', count: 21 },
+		{ name: '読書感想文', color: 'red', count: 7 },
+		{ name: 'English', color: 'purple', count: 4 },
+		{ name: 'Note', color: 'green', count: 2 },
+		{ name: 'プログラミング', color: 'blue', count: 2 },
+		{ name: 'Kaggle', color: 'orange', count: 1 },
+	]
+	
 	return hashtags
 }

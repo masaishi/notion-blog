@@ -9,17 +9,17 @@ import styles from '../styles/Home.module.css'
 import { NotionRenderer } from 'react-notion-x'
 
 import {getPosts, getPage, getHashtags} from '../compornents/notion'
-import { Post } from '../notion/postType'
+import { Post, Hashtag } from '../compornents/notion/postType'
 
 import {PostContent} from '../compornents/layout/postContent'
 
 export const getStaticProps = async () => {
   try {
-    let posts = await getPosts(process.env.NOTION_DATABASE_ID);
+    let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
     
     posts = posts.slice(0, 7);
     for(let post of posts) {
-      post.recordMap = await getPage(post.id);
+      post!.recordMap = await getPage(post!.id);
     }
 
     // Hashtag selections
@@ -38,11 +38,13 @@ export const getStaticProps = async () => {
   }
 }
 
-export default function NotionDomainPage({posts, hashtag_list}) {
+export default function NotionDomainPage({posts, hashtag_list}: {posts: Post[], hashtag_list: Hashtag[]}) {
   const router = useRouter();
   // query hashtags
-  let { hashtags } = router.query
-  hashtags = hashtags ? hashtags.split(',') : []
+  let { hashtags } = router.query;
+  if(hashtags && typeof hashtags === 'string'){
+    hashtags = hashtags.split(',');
+  }
   
   let show_posts = posts
   if(hashtags){
@@ -51,18 +53,20 @@ export default function NotionDomainPage({posts, hashtag_list}) {
     }
   }
 
-  const hashtagChange = e => {
+  const hashtagChange = (e:any) => {
     const {name, checked} = e.target;
-    console.log(e);
-    if(checked){
-      hashtags.push(name);
-    } else {
-      hashtags = hashtags.filter(hashtag => hashtag !== name);
+    if(typeof hashtags === 'object'){
+      if(checked){
+        hashtags?.push(name);
+      } else {
+        hashtags = hashtags!.filter((hashtag:string) => hashtag !== name);
+      }
+
+      router.push({
+        pathname: '/',
+        query: { hashtags: hashtags.join(',')  },
+      });
     }
-    router.push({
-      pathname: '/',
-      query: { hashtags: hashtags.join(',') },
-    });
   }
   
   return (
@@ -71,7 +75,7 @@ export default function NotionDomainPage({posts, hashtag_list}) {
         <div id="selections" className="accordion-collapse collapse" aria-labelledby="selections" data-bs-parent="#selections">
           <div className="accordion-body">
             {hashtag_list.map((hashtag) => (
-              <div className="form-check mb-2">  
+              <div className="form-check mb-2" key={`hashtag-${hashtag.name}-field`}>  
                 <input className="form-check-input" type="checkbox" id={`hashtag-${hashtag.name}`} name={hashtag.name} onChange={hashtagChange} />
                 <label className={`form-check-label notion-${hashtag.color}_background`} htmlFor={`hashtag-${hashtag.name}`} >
                   #{hashtag.name}: {hashtag.count}
