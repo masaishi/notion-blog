@@ -13,12 +13,16 @@ import { Post, Hashtag } from '../compornents/notion/postType'
 
 import {PostContent} from '../compornents/layout/postContent'
 
+function delay(ms: number) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
+}
+
 export const getStaticProps = async () => {
   try {
     let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
     
     // Restrict posts to only those with a featured image.
-    posts = posts.slice(0, 5);
+    // posts = posts.slice(0, 5);
 
     for(let post of posts) {
       post!.recordMap = await getPage(post!.id);
