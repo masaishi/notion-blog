@@ -17,8 +17,8 @@ export const getStaticProps = async () => {
   try {
     let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
     
-    // Restrict posts
-    // posts = posts.slice(0, 5);
+    // Restrict posts to only those with a featured image.
+    posts = posts.slice(0, 5);
 
     for(let post of posts) {
       post!.recordMap = await getPage(post!.id);
@@ -29,7 +29,8 @@ export const getStaticProps = async () => {
     
     let props = {posts: posts, hashtag_list: hashtag_list};
     props = JSON.parse(JSON.stringify(props));
-
+    
+    // const props = {posts: [], hashtag_list: []};
     return { props, revalidate: 60 * 60 * 1 }
   } catch (err) {
     console.error('page error', err)
