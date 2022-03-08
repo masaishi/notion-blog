@@ -113,7 +113,7 @@ export default function NotionDomainPage({posts, hashtag_list}: {posts: Post[], 
         </div>
 
         {/* <h5>{reverseState ? "新しい順" : "古い順"}</h5> */}
-        <h5>新しい順</h5>
+        <h5>Newest</h5>
         {show_posts.map((post:Post) => (
           <div className="card mt-5" key={post.id}>
             <PostContent post={post} />
