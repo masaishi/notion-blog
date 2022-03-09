@@ -25,7 +25,7 @@ export const getStaticProps = async () => {
     // posts = posts.slice(0, 5);
 
     for(let post of posts) {
-      await delay(1000 + Math.random() * 1000);
+      await delay(200 + (Math.random() * 500));
       post!.recordMap = await getPage(post!.id);
     }
 
