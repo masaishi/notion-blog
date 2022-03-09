@@ -35,6 +35,6 @@ export const getStaticProps = async (context:any) => {
     props: {
       post,
     },
-    revalidate: 1,
+    revalidate: 60 * 60 * 1,
   }
 }
