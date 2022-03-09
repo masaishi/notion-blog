@@ -105,7 +105,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>masaishi blog</title>
         {/* Global site tag (gtag.js) - Google Analytics */}
-        {/* <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}></script>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}></script>
         <script
             dangerouslySetInnerHTML={{
               __html: `
@@ -117,7 +117,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             });
           `,
             }}
-          /> */}
+          />
       </Head>
       
       <div className="py-3 container main">
