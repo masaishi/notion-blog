@@ -6,10 +6,11 @@ import dynamic from 'next/dynamic'
 import styles from '../styles/Home.module.css'
 
 import { NotionRenderer } from 'react-notion-x'
-const Code = dynamic(() =>
+const Code: any = dynamic<any>(() =>
   import('react-notion-x/build/third-party/code').then((m) => m.Code)
 )
-const Collection = dynamic(() =>
+
+const Collection = dynamic<any>(() =>
   import('react-notion-x/build/third-party/collection').then(
     (m) => m.Collection
   )

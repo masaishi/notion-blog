@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import Script from 'next/script'
 import { Router, useRouter } from 'next/router'
 
 import '../styles/globals.css'
@@ -105,7 +106,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>masaishi blog</title>
         {/* Global site tag (gtag.js) - Google Analytics */}
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}></script>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />
         <script
             dangerouslySetInnerHTML={{
               __html: `
@@ -146,8 +147,8 @@ function MyApp({ Component, pageProps }: AppProps) {
               プログラミングが趣味の大学生です。<br />
               このブログでは、MLのこととか、アメリカ留学生活のことなどを書いています。<br />
             </p>
-            <a href="https://www.buymeacoffee.com/masaishi" target="_blank"><img id="coffeeImage" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style={{height: '30px', width: '100px'}}></img></a>
-            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="masaishi" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+            <a href="https://www.buymeacoffee.com/masaishi" target="_blank" rel="noreferrer"><img id="coffeeImage" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style={{height: '30px', width: '100px'}}></img></a>
+            <Script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="masaishi" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></Script>
           </div>
         </div>
       </div>
