@@ -126,7 +126,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         <div className="card-body">
           <div className="notion light-mode notion-page notion-block">
             <NavContent router={router} />
-
             {/* <div className="mt-1 accordion" id="selectHashtags">
               <div className="accordion-item">
                 <div id="selections" className="accordion-collapse collapse" aria-labelledby="selections" data-bs-parent="#selections">
