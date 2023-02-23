@@ -13,6 +13,7 @@ import {getPosts, getPage, getHashtags} from '../compornents/notion'
 import { Post, Hashtag } from '../compornents/notion/postType'
 
 import {PostContent} from '../compornents/layout/postContent'
+import { NavContent } from '../compornents/layout/navContent'
 
 function delay(ms: number) {
   return new Promise( resolve => setTimeout(resolve, ms) );
@@ -23,7 +24,7 @@ export const getStaticProps = async () => {
     let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
     
     // // Restrict posts to only those with a featured image.
-    posts = posts.slice(0, 5);
+    // posts = posts.slice(0, 5);
 
     for(let post of posts) {
       await delay(200 + (Math.random() * 500));
@@ -95,7 +96,8 @@ export default function NotionDomainPage({posts, hashtag_list}: {posts: Post[], 
   
   return (
     <div>
-      
+      <NavContent />
+
 
       {/* <button id="reverse-button" onClick={reverse} hidden>reverse-button</button> */}
       <div className="container main">

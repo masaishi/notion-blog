@@ -3,6 +3,7 @@ import {getPosts, getPage} from '../../compornents/notion'
 import { Post } from '../../compornents/notion/postType'
 
 import { PostContent } from '../../compornents/layout/postContent'
+import { NavContent } from '../../compornents/layout/navContent'
 
 export default function PostDetail({ post }: {post: Post}) {
   if (!post) {
@@ -10,9 +11,15 @@ export default function PostDetail({ post }: {post: Post}) {
   }
 
   return (
-    <div className="container main">
-      <PostContent post={post} />
-    </div>
+    <>
+      <NavContent />
+
+      <div className="container main py-3">
+        <PostContent post={post} />
+      </div>
+      
+    </>
+    
   )
 }
 
