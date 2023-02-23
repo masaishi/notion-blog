@@ -1,6 +1,6 @@
 import { NotionRenderer } from 'react-notion-x'
 import {getPosts, getPage} from '../../compornents/notion'
-import { Post  } from '../../compornents/notion/postType'
+import { Post } from '../../compornents/notion/postType'
 
 import { PostContent } from '../../compornents/layout/postContent'
 

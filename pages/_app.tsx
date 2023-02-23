@@ -118,6 +118,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           `,
             }}
           />
+        
       </Head>
       
       <div className="py-3 container main">
@@ -134,6 +135,19 @@ function MyApp({ Component, pageProps }: AppProps) {
                 </div>
               </div>
             </div> */}
+          </div>
+        </div>
+      </div>
+
+      <div className="py-3 container main">
+        <div className="card-body">
+          <div className="notion light-mode notion-page notion-block">
+            <p>
+              プログラミングが趣味の大学生です。<br />
+              このブログでは、MLのこととか、アメリカ留学生活のことなどを書いています。<br />
+            </p>
+            <a href="https://www.buymeacoffee.com/masaishi" target="_blank"><img id="coffeeImage" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style={{height: '30px', width: '100px'}}></img></a>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="masaishi" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
           </div>
         </div>
       </div>

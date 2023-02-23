@@ -8,6 +8,7 @@ import styles from '../styles/Home.module.css'
 
 import { NotionRenderer } from 'react-notion-x'
 
+
 import {getPosts, getPage, getHashtags} from '../compornents/notion'
 import { Post, Hashtag } from '../compornents/notion/postType'
 
@@ -21,8 +22,8 @@ export const getStaticProps = async () => {
   try {
     let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
     
-    // Restrict posts to only those with a featured image.
-    // posts = posts.slice(0, 5);
+    // // Restrict posts to only those with a featured image.
+    posts = posts.slice(0, 5);
 
     for(let post of posts) {
       await delay(200 + (Math.random() * 500));
