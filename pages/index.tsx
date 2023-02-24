@@ -98,7 +98,6 @@ export default function NotionDomainPage({posts, hashtag_list}: {posts: Post[], 
     <div>
       <NavContent />
 
-
       {/* <button id="reverse-button" onClick={reverse} hidden>reverse-button</button> */}
       <div className="container main">
         <div className="mt-1 accordion card mb-3" id="selectHashtags">
