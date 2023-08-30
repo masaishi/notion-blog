@@ -14,15 +14,29 @@ const notionApi = new NotionAPI({
 import { Post, Hashtag } from './postType'
 
 export const getPosts = async ( databaseId: string) => {
-	const response = await notion.databases.query({
-		database_id: databaseId,
-		// filter: {
-		// 	property: 'Published',
-		// 	checkbox: {
-		// 		equals: true,
-		// 	},
-		// }
-	})
+	let response:any = { results: [] }
+	try {
+		response = await notion.databases.query({
+			database_id: databaseId,
+			page_size: 10,
+			filter: {
+				property: 'Published',
+				checkbox: {
+					equals: true,
+				},
+			},
+			sorts: [
+				{
+					property: 'Date',
+					direction: 'descending',
+				},
+			],
+		})
+	} catch (error) {
+		console.error(error)
+	}
+
+	
 	const { results } = response
 
 	let posts = results.map((result:any) => {
@@ -87,7 +101,7 @@ export const getPosts = async ( databaseId: string) => {
 		// Add date if it is empty.
 		const tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
 		if(!d.Date.date) {
-    	let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+			let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
 			localISOTime += '-08:00';
 
 			let properties = {
