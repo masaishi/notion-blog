@@ -28,7 +28,7 @@ let NavBar = ({router}: {router:Router}) => {
 	
 	if(router.pathname == "/"){
 		return (
-			<div className="row g-0 flex-nowrap justify-content-between align-items-center w-100">
+            <div className="row g-0 flex-nowrap justify-content-between align-items-center w-100">
 				<div className="col-3">
 					<button className="link-secondary btn btn btn-outline-secondary">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-sort-down" viewBox="0 0 16 16">
@@ -38,17 +38,17 @@ let NavBar = ({router}: {router:Router}) => {
 				</div>
 				<div className="col-6 text-center">
 					<div className='row align-items-center'>
-						<Link href="/"><p className="h2 mb-0 notion-link">masaishi blog</p></Link>
+						<Link href="/" legacyBehavior><p className="h2 mb-0 notion-link">masaishi blog</p></Link>
 					</div>   
 				</div>
 				<div className="col-3 d-flex justify-content-end align-items-right">
 					<HashCheck router={router} />
 				</div>
 			</div>
-		)
+        );
 	} else {
 		return (
-			<div className="row g-0 flex-nowrap justify-content-between align-items-center w-100">
+            <div className="row g-0 flex-nowrap justify-content-between align-items-center w-100">
 				<div className="col-3">
 					<button className="link-secondary btn btn btn-outline-secondary" onClick={() => router.back()}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-return-left" viewBox="0 0 16 16">
@@ -58,7 +58,7 @@ let NavBar = ({router}: {router:Router}) => {
 				</div>
 				<div className="col-6 text-center">
 					<div className='row align-items-center'>
-						<Link href="/"><p className="h2 mb-0 notion-link">masaishi blog</p></Link>
+						<Link href="/" legacyBehavior><p className="h2 mb-0 notion-link">masaishi blog</p></Link>
 					</div>   
 				</div>
 				<div className="col-3 d-flex justify-content-end align-items-right">
@@ -69,7 +69,7 @@ let NavBar = ({router}: {router:Router}) => {
 					</button> */}
 				</div>
 			</div>
-		)
+        );
 	}
 }
 

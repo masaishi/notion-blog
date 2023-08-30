@@ -18,7 +18,7 @@ export const getPosts = async ( databaseId: string) => {
 	try {
 		response = await notion.databases.query({
 			database_id: databaseId,
-			page_size: 10,
+			// page_size: 10,
 			filter: {
 				property: 'Published',
 				checkbox: {
