@@ -1,0 +1,11 @@
+name: 1-day-cron
+on:
+  schedule:
+    - cron: '0 9 */1 * *'
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call our API route
+        run: |
+          curl -X POST https://api.vercel.com/v1/integrations/deploy/prj_5G5U0bpFWu733VDyA9skZjm3SZlO/nxFKAAgR5w
