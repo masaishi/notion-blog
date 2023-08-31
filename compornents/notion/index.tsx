@@ -14,29 +14,23 @@ const notionApi = new NotionAPI({
 import { Post, Hashtag } from './postType'
 
 export const getPosts = async ( databaseId: string) => {
-	let response:any = { results: [] }
-	try {
-		response = await notion.databases.query({
-			database_id: databaseId,
-			// page_size: 10,
-			filter: {
-				property: 'Published',
-				checkbox: {
-					equals: true,
-				},
+	let response = await notion.databases.query({
+		database_id: databaseId,
+		// page_size: 10,
+		filter: {
+			property: 'Published',
+			checkbox: {
+				equals: true,
 			},
-			sorts: [
-				{
-					property: 'Date',
-					direction: 'descending',
-				},
-			],
-		})
-	} catch (error) {
-		console.error(error)
-	}
+		},
+		sorts: [
+			{
+				property: 'Date',
+				direction: 'descending',
+			},
+		],
+	})
 
-	
 	const { results } = response
 
 	let posts = results.map((result:any) => {

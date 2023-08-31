@@ -29,10 +29,15 @@ export const getStaticPaths = async () => {
     paths: posts.map((post) => ({ params: { slug: post!.slug, id: post!.id } })),
     fallback: true,
   }
+  // return {
+  //   paths: [],
+  //   fallback: true,
+  // }
 }
 
 export const getStaticProps = async (context:any) => {
   const { slug } = context.params;
+  console.log("each post getStaticProps ", slug);
   const posts = await getPosts(process.env.NOTION_DATABASE_ID as string);
   let post:any = posts.find((p) => p!.slug === slug) ?? null;
   post.recordMap = await getPage(post.id);

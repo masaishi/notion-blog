@@ -24,10 +24,12 @@ export const getStaticProps = async () => {
     let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
     
     // // Restrict posts to only those with a featured image.
-    // posts = posts.slice(0, 5);
+    posts = posts.slice(0, 5);
 
     for(let post of posts) {
       await delay(1000 + (Math.random() * 1000));
+      console.log("Index getStaticProps ", post!.slug);
+      
       post!.recordMap = await getPage(post!.id);
     }
 
@@ -41,10 +43,7 @@ export const getStaticProps = async () => {
     return { props, revalidate: 60 * 60 * 1 }
   } catch (err) {
     console.error('page error', err)
-
-    // we don't want to publish the error version of this page, so
-    // let next.js know explicitly that incremental SSG failed
-    throw err
+    return { props: { posts: [], hashtag_list: [] } }
   }
 }
 
