@@ -24,7 +24,7 @@ export const getStaticProps = async () => {
     let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
     
     // // Restrict posts to only those with a featured image.
-    posts = posts.slice(0, 5);
+    //posts = posts.slice(0, 5);
 
     for(let post of posts) {
       await delay(1000 + (Math.random() * 1000));
