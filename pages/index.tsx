@@ -1,13 +1,5 @@
 import React from 'react'
-import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-
-import styles from '../styles/Home.module.css'
-
-import { NotionRenderer } from 'react-notion-x'
-
 
 import {getPosts, getPage, getHashtags} from '../compornents/notion'
 import { Post, Hashtag } from '../compornents/notion/postType'
@@ -22,15 +14,19 @@ function delay(ms: number) {
 export const getStaticProps = async () => {
   try {
     let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
-    
+
     // // Restrict posts to only those with a featured image.
     //posts = posts.slice(0, 5);
 
     for(let post of posts) {
-      await delay(1000 + (Math.random() * 1000));
-      console.log("Index getStaticProps ", post!.slug);
-      
-      post!.recordMap = await getPage(post!.id);
+      await delay(100 + (Math.random() * 100));
+			console.log('post', post);
+			
+			try {
+				post!.recordMap = await getPage(post!.id);
+			} catch (err) {
+				console.error('\n\n\n\nPage error', err, '\n\n\n\n')
+			}
     }
 
     // Hashtag selections
@@ -39,7 +35,6 @@ export const getStaticProps = async () => {
     let props = {posts: posts, hashtag_list: hashtag_list};
     props = JSON.parse(JSON.stringify(props));
     
-    // const props = {posts: [], hashtag_list: []};
     return { props, revalidate: 60 * 60 * 1 }
   } catch (err) {
     console.error('page error', err)
@@ -49,7 +44,6 @@ export const getStaticProps = async () => {
 
 export default function NotionDomainPage({posts, hashtag_list}: {posts: Post[], hashtag_list: Hashtag[]}) {
   const router = useRouter();
-  // query hashtags
   let { hashtags } = router.query;
   
   let q_hashtags:string[] = [];
@@ -66,8 +60,7 @@ export default function NotionDomainPage({posts, hashtag_list}: {posts: Post[], 
 
   const hashtagChange = (e:any) => {
     const {name, checked} = e.target;
-    console.log("hashtags", name, checked, q_hashtags);
-    
+
     if(q_hashtags){
       if(checked){
         q_hashtags!.push(name);
@@ -118,9 +111,11 @@ export default function NotionDomainPage({posts, hashtag_list}: {posts: Post[], 
         {/* <h5>{reverseState ? "新しい順" : "古い順"}</h5> */}
         <h5>Newest</h5>
         {show_posts.map((post:Post) => (
-          <div className="card mt-5" key={post.id}>
-            <PostContent post={post} />
-          </div>
+					post.recordMap && (
+						<div className="card mt-5" key={post.id}>
+							<PostContent post={post} />
+						</div>
+					)
         ))}
       </div>
     </div>

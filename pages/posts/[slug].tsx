@@ -24,29 +24,41 @@ export default function PostDetail({ post }: {post: Post}) {
 }
 
 export const getStaticPaths = async () => {
-  const posts = await getPosts(process.env.NOTION_DATABASE_ID as string)
-  return {
-    paths: posts.map((post) => ({ params: { slug: post!.slug, id: post!.id } })),
-    fallback: true,
+  try {
+    const posts = await getPosts(process.env.NOTION_DATABASE_ID as string);
+    return {
+      paths: posts.map((post) => ({ params: { slug: post!.slug, id: post!.id } })),
+      fallback: true,
+    }
+  } catch (error) {
+    console.error('Error while getting static paths:', error);
+    return {
+      paths: [],
+      fallback: true,
+    };
   }
-  // return {
-  //   paths: [],
-  //   fallback: true,
-  // }
 }
 
 export const getStaticProps = async (context:any) => {
-  const { slug } = context.params;
-  console.log("each post getStaticProps ", slug);
-  const posts = await getPosts(process.env.NOTION_DATABASE_ID as string);
-  let post:any = posts.find((p) => p!.slug === slug) ?? null;
-  post.recordMap = await getPage(post.id);
-  post = JSON.parse(JSON.stringify(post));
-  post = post as Post;
-  return {
-    props: {
-      post,
-    },
-    revalidate: 60 * 60 * 1,
+  try {
+    const { slug } = context.params;
+    const posts = await getPosts(process.env.NOTION_DATABASE_ID as string);
+    let post:any = posts.find((p) => p!.slug === slug) ?? null;
+    if (!post) throw new Error('Post not found');
+
+    post.recordMap = await getPage(post.id);
+    post = JSON.parse(JSON.stringify(post));
+    post = post as Post;
+    return {
+      props: {
+        post,
+      },
+      revalidate: 60 * 60 * 1,  // revalidate every 1 hour
+    };
+  } catch (error) {
+    console.error('Error while getting static props:', error);
+    return {
+      notFound: true,
+    };
   }
 }
