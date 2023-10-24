@@ -13,10 +13,7 @@ function delay(ms: number) {
 
 export const getStaticProps = async () => {
   try {
-    let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
-
-    // // Restrict posts to only those with a featured image.
-    //posts = posts.slice(0, 5);
+    let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '', 40);
 
     for(let post of posts) {
       await delay(100 + (Math.random() * 100));
@@ -25,7 +22,7 @@ export const getStaticProps = async () => {
 			try {
 				post!.recordMap = await getPage(post!.id);
 			} catch (err) {
-				console.log('\n\n\n\nPage error', err, '\n\n\n\n')
+				console.log('\n\n\n\nGet page error:', err, '\n\n\n\n')
 			}
     }
 

@@ -13,10 +13,11 @@ const notionApi = new NotionAPI({
 
 import { Post, Hashtag } from './postType'
 
-export const getPosts = async ( databaseId: string) => {
+export const getPosts = async ( databaseId: string, page_size: any = undefined, start_cursor: any = undefined ) => {
 	let response = await notion.databases.query({
 		database_id: databaseId,
-		// page_size: 10,
+		page_size: page_size,
+		start_cursor: start_cursor,
 		filter: {
 			property: 'Published',
 			checkbox: {
