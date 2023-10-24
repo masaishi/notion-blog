@@ -25,7 +25,7 @@ export const getStaticProps = async () => {
 			try {
 				post!.recordMap = await getPage(post!.id);
 			} catch (err) {
-				console.error('\n\n\n\nPage error', err, '\n\n\n\n')
+				console.log('\n\n\n\nPage error', err, '\n\n\n\n')
 			}
     }
 
@@ -37,7 +37,7 @@ export const getStaticProps = async () => {
     
     return { props, revalidate: 60 * 60 * 1 }
   } catch (err) {
-    console.error('page error', err)
+    console.log('Page error', err)
     return { props: { posts: [], hashtag_list: [] } }
   }
 }
