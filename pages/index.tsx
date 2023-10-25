@@ -13,19 +13,16 @@ function delay(ms: number) {
 
 export const getStaticProps = async () => {
   try {
-    let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '', 40);
+    let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '', 10);
 
     for(let post of posts) {
-      await delay(100 + (Math.random() * 100));
-			console.log('post', post);
-			
 			try {
 				post!.recordMap = await getPage(post!.id);
 			} catch (err) {
 				console.log('\n\n\n\nGet page error:', err, '\n\n\n\n')
 			}
     }
-
+		
     // Hashtag selections
     let hashtag_list = await getHashtags();
     
