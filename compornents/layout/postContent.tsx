@@ -52,21 +52,20 @@ export const PostContent = ({post}:{post:Post}) => {
               </div>
           </div>
           
-          <div className="card-text mt-4 post-content contents-texts">
-          {/* <div className="card-text post-content contents-texts" id={`${post.id}_contents`}> */}
-            { post.recordMap && (
-                <NotionRenderer
-                    recordMap={post.recordMap}
-                    fullPage={false}
-                    darkMode={false}
-                    components={{
-                        Code,
-                        Collection,
-                        Tweet,
-                    }}
-                />
-            )}
-          </div>
+					{post.recordMap && Object.keys(post.recordMap).length > 0 && (
+						<div className="card-text mt-4 post-content contents-texts">
+								<NotionRenderer
+										recordMap={post.recordMap}
+										fullPage={false}
+										darkMode={false}
+										components={{
+												Code,
+												Collection,
+												Tweet,
+										}}
+								/>
+						</div>
+					)}
       </div>
   );
 }

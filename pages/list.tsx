@@ -1,6 +1,5 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
 import {getPosts, getPage, getHashtags} from '../compornents/notion'
 import { Post, Hashtag } from '../compornents/notion/postType'
@@ -14,16 +13,9 @@ function delay(ms: number) {
 
 export const getStaticProps = async () => {
   try {
-    let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '', 10);
-
-    for(let post of posts) {
-			try {
-				post!.recordMap = await getPage(post!.id);
-			} catch (err) {
-				console.log('\n\n\n\nGet page error:', err, '\n\n\n\n')
-			}
-    }
-
+    let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
+		console.log('posts', posts);
+		
     // Hashtag selections
     let hashtag_list = await getHashtags();
     
@@ -102,21 +94,13 @@ export default function NotionDomainPage({posts, hashtag_list}: {posts: Post[], 
             </div>
           </div>
         </div>
-								
-				<Link href="/list">
-					<button className="mb-5 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
-						Posts List
-					</button>
-				</Link>
 
         {/* <h5>{reverseState ? "新しい順" : "古い順"}</h5> */}
         <h5>Newest</h5>
         {show_posts.map((post:Post) => (
-					post.recordMap && (
-						<div className="card mb-5" key={post.id}>
-							<PostContent post={post} />
-						</div>
-					)
+					<div className="card mt-5" key={post.id}>
+						<PostContent post={post} />
+					</div>
         ))}
       </div>
     </div>
