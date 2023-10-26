@@ -181,7 +181,7 @@ export const notionAPIgetPage = async (pageId: string) => {
 };
 
 export const getPage = async (slug: string) => {
-	const response = await fetch(`http://localhost:3000/data/${slug}`);
+	const response = await fetch(`https://blog.masaishi.net/data/${slug}`);
 	const data = await response.text();
 	const regex = /<pre>(.*?)<\/pre>/gs;
 	const match = regex.exec(data);
