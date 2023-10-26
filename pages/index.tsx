@@ -16,8 +16,7 @@ export const getStaticProps = async () => {
   try {
     let posts = await getPosts(process.env.NOTION_DATABASE_ID ?? '');
 
-		// Load only first 5 posts
-    for(let i = 0; i < 5; i++){
+    for(let i = 0; i < 3; i++){
 			let post = posts[i];
 			if(!post) break;
 			try {
