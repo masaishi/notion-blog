@@ -1,5 +1,6 @@
 import { NotionRenderer } from 'react-notion-x'
-import {getPosts, getPage} from '../../compornents/notion'
+
+import {getPosts, getPost, getPage} from '../../compornents/notion'
 import { Post } from '../../compornents/notion/postType'
 
 import { PostContent } from '../../compornents/layout/postContent'
@@ -40,22 +41,11 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context:any) => {
   try {
 		const { slug } = context.params;
-
-		//// This APP data/[slug].tsx
-		//const response = await fetch(`http://localhost:3000/data/${slug}`);
-		//const data = await response.text();
-		//const regex = /<pre>(.*?)<\/pre>/gs;
-		//const match = regex.exec(data);
-		//if (!match) {
-		//	throw new Error('Post not found');
-		//}
-				
-    const posts = await getPosts(process.env.NOTION_DATABASE_ID as string);
-    let post:any = posts.find((p) => p!.slug === slug) ?? null;
+    let post = await getPost(process.env.NOTION_DATABASE_ID as string, slug);
     if (!post) throw new Error('Post not found');
 
-    post.recordMap = await getPage(post.id);
-		//post.recordMap = match[1];
+		post.recordMap = await getPage(slug);
+
     post = JSON.parse(JSON.stringify(post));
     post = post as Post;
 		

@@ -14,6 +14,7 @@
     "bootstrap": "^5.3.1",
     "next": "^13.4.19",
     "notion-client": "^4.16.1",
+    "notion-types": "^6.16.0",
     "rc-dropdown": "^4.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

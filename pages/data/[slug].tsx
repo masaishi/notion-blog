@@ -1,4 +1,4 @@
-import {getPosts, getPage} from '../../compornents/notion'
+import {getPosts, getPost, notionAPIgetPage} from '../../compornents/notion'
 import { Post } from '../../compornents/notion/postType'
 
 export default function PostDetail({ post }: {post: Post}) {
@@ -32,11 +32,10 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context:any) => {
   try {
     const { slug } = context.params;
-    const posts = await getPosts(process.env.NOTION_DATABASE_ID as string);
-    let post:any = posts.find((p) => p!.slug === slug) ?? null;
+    let post = await getPost(process.env.NOTION_DATABASE_ID as string, slug);
     if (!post) throw new Error('Post not found');
 
-    post.recordMap = await getPage(post.id);
+    post.recordMap = await notionAPIgetPage(post.id);
     post = JSON.parse(JSON.stringify(post));
     post = post as Post;
     return {

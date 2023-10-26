@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 
-import {getPosts, getPage, getHashtags} from '../compornents/notion'
+import {getPosts, getHashtags} from '../compornents/notion'
 import { Post, Hashtag } from '../compornents/notion/postType'
 
 import {PostContent} from '../compornents/layout/postContent'

@@ -2,7 +2,7 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import {getPosts, getPage, getHashtags} from '../compornents/notion'
+import {getPosts, notionAPIgetPage, getHashtags} from '../compornents/notion'
 import { Post, Hashtag } from '../compornents/notion/postType'
 
 import {PostContent} from '../compornents/layout/postContent'
@@ -18,7 +18,7 @@ export const getStaticProps = async () => {
 
     for(let post of posts) {
 			try {
-				post!.recordMap = await getPage(post!.id);
+				post!.recordMap = await notionAPIgetPage(post!.id);
 			} catch (err) {
 				console.log('\n\n\n\nGet page error:', err, '\n\n\n\n')
 			}
