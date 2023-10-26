@@ -1,9 +1,7 @@
-import React from 'react'
-import Head from 'next/head'
-import Image from 'next/image'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import styles from '../styles/Home.module.css'
+import * as notionTypes from "notion-types";
 
 import { NotionRenderer } from 'react-notion-x'
 const Code: any = dynamic<any>(() =>
@@ -24,8 +22,40 @@ const Tweet = ({ id }: { id: string }) => {
 import { Post } from '../notion/postType'
 
 export const PostContent = ({post}:{post:Post}) => {
+	// After user scroll and distance to this post is less than 100px, load post.recordMap
+	const [load, setLoad] = useState(false);
+	useEffect(() => {
+		const handleScroll = () => {
+			const distance = document.getElementById(`${post.id}_content`)?.getBoundingClientRect().top! - window.innerHeight;
+			if(distance! < 200) setLoad(true);
+		}
+		window.addEventListener('scroll', handleScroll);
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		}
+	}, []);
+
+	useEffect(() => {
+		if(load && Object.keys(post.recordMap).length === 0){
+			(async () => {
+				const response = await fetch(`https://blog.masaishi.net/data/${post.slug}`);
+				const data = await response.text();
+				const regex = /<pre>(.*?)<\/pre>/gs;
+				const match = regex.exec(data);
+				if (!match) {
+					throw new Error("Post not found");
+				}
+				const jsonString = match[1].replace(/&quot;/g, '"'); // Convert &quot; to "
+				const parsedData: notionTypes.ExtendedRecordMap = JSON.parse(jsonString);
+				post.recordMap = parsedData;
+				post = JSON.parse(JSON.stringify(post));
+				post = post as Post;
+			})();
+		}
+	}, [load]);
+
   return (
-      <div className="card-body" key={`${post.id}_content`}>
+      <div className="card-body" id={`${post.id}_content`} key={`${post.id}_content`}>
           <div className='notion light-mode notion-page notion-block'>
               <div className="card-title d-flex align-items-center">
                   <div className="profile align-items-center">
