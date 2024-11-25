@@ -1810,12 +1810,7 @@ notion-types@^4.19.8:
   resolved "https://registry.npmjs.org/notion-types/-/notion-types-4.19.8.tgz"
   integrity sha512-KLszLpe2UtejnX0bCoLe8JFZPeQyUS15F29LW4iRPFwnlNZePWz0h303F0IBhxOXQRiWIwy4mEGzRDu45a+dhA==
 
-notion-types@^6.16.0:
-  version "6.16.0"
-  resolved "https://registry.npmjs.org/notion-types/-/notion-types-6.16.0.tgz"
-  integrity sha512-Cv83GaAczx57q1qsnuG8DHOuOb63c83u9LX2IainG5aqBEB0GUuLZ4DUQfB6MaXt+FMY9fO+KTgPeZWwX9hbrQ==
-
-notion-types@7.1.5:
+notion-types@^7.1.5, notion-types@7.1.5:
   version "7.1.5"
   resolved "https://registry.npmjs.org/notion-types/-/notion-types-7.1.5.tgz"
   integrity sha512-m/7DVYx5MLMWwdU5SWfK5VSUAsJqah7ZnG6sv1AGZikmxmzwAAUxncVmkodyRWo/EXaymp1qw1AwniFIV7IbEQ==
